@@ -4,7 +4,10 @@ Title: Clustering Using Finite Mixtures
 Version: 1.6
 Depends: R (>= 3.5.0)
 Imports: graphics, utils, stats, MASS, cluster
-Suggests: knitr, ade4
+Suggests: 
+    knitr,
+    ade4,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Date: 2021-06-17
 Authors@R: c(person("Shirley", "Pledger", role = c("aut", "cre"),
@@ -26,3 +29,4 @@ Author: Shirley Pledger [aut, cre],
   Lloyd Pledger [ctb],
   Murray Efford [aut],
   Louise McMillan [aut]
+Config/testthat/edition: 3
