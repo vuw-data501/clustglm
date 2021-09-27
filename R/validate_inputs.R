@@ -51,6 +51,7 @@ validate_inputs <- function(formula, family, data, weights, offset, control,
         (!is.numeric(nclust) || !is.vector(nclust) || length(nclust) < 1 ||
          !all(nclust %% 1 == 0) || !all(nclust >= 2)))
         stop("nclust must be a vector of positive integers (2 or larger).")
+    if (length(nclust) != length(fact4clust)) stop("nclust must be the same length as 'fact4clust'.")
     if (!is.null(clustfactnames) &&
         (!is.vector(clustfactnames) || !is.character(clustfactnames) ||
          length(clustfactnames) != length(fact4clust) )) {
@@ -96,13 +97,23 @@ validate_inputs <- function(formula, family, data, weights, offset, control,
     }
 
     # Check SAVE options
-    if (!(save.long %in% c(TRUE,FALSE))) stop("save.long must be TRUE or FALSE.")
-    if (!(save.ests %in% c(TRUE,FALSE))) stop("save.ests must be TRUE or FALSE.")
-    if (!(save.Qres %in% c(TRUE,FALSE))) stop("save.Qres must be TRUE or FALSE.")
-    if (!(save.RQres %in% c(TRUE,FALSE))) stop("save.RQres must be TRUE or FALSE.")
-    if (!(save.EQres %in% c(TRUE,FALSE))) stop("save.EQres must be TRUE or FALSE.")
-
+    if (!is.vector(save.long) || length(save.long) != 1 || !(save.long %in% c(TRUE,FALSE))) {
+        stop("save.long must be TRUE or FALSE.")
+    }
+    if (!is.vector(save.ests) || length(save.ests) != 1 || !(save.ests %in% c(TRUE,FALSE))) {
+        stop("save.ests must be TRUE or FALSE.")
+    }
+    if (!is.vector(save.Qres) || length(save.Qres) != 1 || !(save.Qres %in% c(TRUE,FALSE))) {
+        stop("save.Qres must be TRUE or FALSE.")
+    }
+    if (!is.vector(save.RQres) || length(save.RQres) != 1 || !(save.RQres %in% c(TRUE,FALSE))) {
+        stop("save.RQres must be TRUE or FALSE.")
+    }
+    if (!is.vector(save.EQres) || length(save.EQres) != 1 || !(save.EQres %in% c(TRUE,FALSE))) {
+        stop("save.EQres must be TRUE or FALSE.")
+    }
     if (!is.numeric(verbose) || !is.vector(verbose) || length(verbose) != 1 ||
-        verbose %% 1 != 0 || verbose < 0)
+        verbose %% 1 != 0 || verbose < 0) {
         stop("verbose must be an integer, 0 or 1 or 2.")
+    }
 }
