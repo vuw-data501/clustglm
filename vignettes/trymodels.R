@@ -45,6 +45,8 @@ str(counts.df)
 ## a constant, and so can be used to compare clustered and
 ## non-clustered models.
 
+set.seed(1)
+
 Null.out <- clustglm(formula = Count ~ 1,
                      data = counts.df,
                      family = "poisson")
@@ -99,6 +101,7 @@ comparison(modellist)
 
 ?clustglm
 
+set.seed(2)
 r2.out <- clustglm(formula = Count ~ Row + Col + RowClust:Col,
                        family = "poisson",
          	       data = counts.df,
@@ -188,6 +191,7 @@ r2.ord <- ordplot(model = r2.out,
 ## Three row clusters:
 ## -------------------
 
+set.seed(3)
 r3.out <- clustglm(formula = Count ~ Row + Col + RowClust:Col,
                        family = "poisson",
          	       data = counts.df,
@@ -231,7 +235,7 @@ r3.profile.sort <- profileplot(model = r3.out,
 ## Clusters 2 and 3 each contain effectively three Rows, and so give more
 ## stable traces than cluster 1, with effectively only two rows.
 ## Cluster 1 is smaller and shows more fluctuation.
-
+4
 ## Ordination plot:
 
 ## With three row clusters the 3 by J matrix of interaction parameters give
@@ -245,7 +249,7 @@ r3.ord <- ordplot(model = r3.out,
         clust.factor = "RowClust",
 	main = "Column ordination by three row clusters")
 
-## Each point represents a column. The points are in 3D, but are coplanar
+## Each4 point represents a column. The points are in 3D, but are coplanar
 ## because of linearity in the link space. The plane has been rotated down
 ## to show the points in an x-y plane. The distances apart on this plot are
 ## consistent with the sorted profile plot and ordination plot from the
@@ -260,6 +264,7 @@ r3.ord <- ordplot(model = r3.out,
 ## Two column clusters:
 ## --------------------
 
+set.seed(4)
 c2.out <- clustglm(formula = Count ~ Row + Col + Row:ColClust,
                      family = "poisson",
                      data = counts.df,
@@ -309,6 +314,7 @@ c2.ord <- ordplot(model = c2.out,
 ## Three column clusters:
 ## -----------------------
 
+set.seed(5)
 c3.out <- clustglm(formula = Count ~ Row + Col + Row:ColClust,
                        family = "poisson",
          	       data = counts.df,
@@ -318,8 +324,8 @@ c3.out <- clustglm(formula = Count ~ Row + Col + Row:ColClust,
          	       verbose = 1)
 
 names(c3.out)
-c3.out$LLint   ##  -41.355
-c3.out$AIC     ##  152.71
+c3.out$LLint   ##  -43.289
+c3.out$AIC     ##  156.578
 
 ## See posterior probabilities:
 c3.out$pp.list   ## Posterior probabilities
@@ -330,13 +336,13 @@ pp.mat <- c3.out$pp.list[[1]]
 split(rownames(pp.mat), apply(pp.mat,1,which.max))
 
 ## $`1`
-## [1] "a" "c" "e" "h"
-##
+## [1] "d" "f" "g" "i"
+## 
 ## $`2`
-## [1] "d" "f"
+## [1] "b" "j"
 ##
 ## $`3`
-## [1] "b" "g" "i" "j"
+## [1] "a" "c" "e" "h"
 
 ## Do a profile plot of the three clusters:
 
@@ -386,15 +392,15 @@ mod.list <- list(Null = Null.out,
 
 mod.table <- comparison(mod.list)
 
-##             logL npar     AIC relAIC     BIC relBIC
-## Null    -105.375    1 212.750 60.040 215.132  0.000
-## Row      -93.486    8 202.972 50.262 222.028  6.896
-## Col      -94.934   10 209.867 57.157 233.687 18.555
-## Row+Col  -83.044   17 200.089 47.379 240.583 25.451
-## r2       -53.852   28 163.704 10.994 230.401 15.269
-## r3       -40.420   39 158.839  6.129 251.738 36.606
-## c2       -52.157   26 156.314  3.604 218.247  3.115
-## c3       -41.355   35 152.710  0.000 236.081 20.949
+#             logL Res.Dev. npar     AIC relAIC     BIC relBIC
+# Null    -105.375  210.750    1 212.750 56.436 215.132  0.000
+# Row      -93.486  186.972    8 202.972 46.658 222.028  6.896
+# Col      -94.934  189.867   10 209.867 53.553 233.687 18.555
+# Row+Col  -83.044  166.089   17 200.089 43.775 240.583 25.451
+# r2       -53.852  107.704   28 163.704  7.390 230.401 15.269
+# r3       -40.420   80.839   39 158.839  2.525 251.738 36.606
+# c2       -52.157  104.314   26 156.314  0.000 218.247  3.115
+# c3       -43.289   86.578   35 156.578  0.264 239.949 24.817
 
 ## "relAIC" is the value relative to the minimum.
 ## The model with lowest AIC has relAIC = 0.  Similarly BIC.
@@ -410,6 +416,7 @@ mod.table <- comparison(mod.list)
 ## Two row clusters and column clusters
 ## ------------------------------------
 
+set.seed(6)
 r2c2.out <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
                       family = "poisson",
                       data = counts.df,
@@ -418,15 +425,34 @@ r2c2.out <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
                       start.control = list(randstarts = 100),
                       verbose = 1)
 
-r2c2.out$LLint    ## -69.359
-## Tried again, better answer.
-r2c2.out2$LLint   ## -66.905
-## Third try, same as second.
-r2c2.out3$LLint   ## -66.905
+r2c2.out$LLint    ## -66.905
+
+set.seed(7)
+r2c2.out <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
+                      family = "poisson",
+                      data = counts.df,
+                      fact4clust = c("Row","Col"), nclus = c(2,2),
+                      clustfactnames = c("RowClust","ColClust"),
+                      start.control = list(randstarts = 100),
+                      verbose = 1)
+## Tried again, same answer.
+r2c2.out$LLint   ## -66.905
+
+set.seed(8)
+r2c2.out <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
+                      family = "poisson",
+                      data = counts.df,
+                      fact4clust = c("Row","Col"), nclus = c(2,2),
+                      clustfactnames = c("RowClust","ColClust"),
+                      start.control = list(randstarts = 100),
+                      verbose = 1)
+## Third try, worse than previous two.
+r2c2.out$LLint   ## -69.359
 
 ## Try allocated start using single-mode clustering:
 pp.start <- list(r2.out$pp.list[[1]],c2.out$pp.list[[1]])
 
+set.seed(9)
 r2c2.out4 <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
                       family = "poisson",
                       data = counts.df,
@@ -447,6 +473,7 @@ r2c2.out <- r2c2.out4
 
 pp.start <- list(r3.out$pp.list[[1]],c3.out$pp.list[[1]])
 
+set.seed(10)
 r3c3.out <- clustglm(formula = Count ~ Row + Col + RowClust:ColClust,
                       family = "poisson",
                       data = counts.df,
@@ -466,24 +493,24 @@ pp2
 split(rownames(pp1), apply(pp1,1,which.max))
 
 ## $`1`
-## [1] "B" "G"
+## [1] "D" "F" "H"
 ##
 ## $`2`
-## [1] "A" "C" "E"
+## [1] "B" "G"
 ##
 ## $`3`
-## [1] "D" "F" "H"
+## [1] "A" "C" "E"
 
 split(rownames(pp2), apply(pp2,1,which.max))
 
 ## $`1`
-## [1] "a" "c" "e" "h"
-##
-## $`2`
 ## [1] "d" "f" "g" "i"
 ##
-## $`3`
+## $`2`
 ## [1] "b" "j"
+##
+## $`3`
+## [1] "a" "c" "e" "h"
 
 
 
@@ -494,26 +521,22 @@ split(rownames(pp2), apply(pp2,1,which.max))
 r3c3.pars <- findpars(r3c3.out)
 r3c3.pars
 
-## $`Overall wt.mean`
+## $`Overall mean`
 ## [1] 1.688166
-##
+## 
 ## $Row
-##           A           B           C           D           E
-##  0.02683895  0.26980105 -0.31266806 -0.22467082 -0.08528024
-##            F           G           H
-## 	     0.35338368  0.17573975 -0.20314431
-##
+##           A           B           C           D           E           F           G           H 
+##  0.02683889  0.26980106 -0.31266812 -0.22467076 -0.08528030  0.35338374  0.17573976 -0.20314426 
+## 
 ## $Col
-##           a           b           c           d           e
-## -0.22094867  0.13529454 -0.02033239 -0.05251558 -0.38584907
-##           f           g           h           i           j
-##  0.03264256  0.16617244 -0.24864924  0.21771495  0.37647046
-##
+##           a           b           c           d           e           f           g           h           i           j 
+## -0.22094870  0.13529421 -0.02033234 -0.05251546 -0.38584903  0.03264269  0.16617257 -0.24864920  0.21771513  0.37647013 
+## 
 ## $`RowClust:ColClust`
 ##            ColClust1  ColClust2  ColClust3
-## RowClust1 -0.1486823 -0.1027084  0.4698188
-## RowClust2 -0.4831763  0.5472480 -0.1225665
-## RowClust3  0.5812109 -0.4786263 -0.1888967
+## RowClust1 -0.4786261 -0.1888964  0.5812108
+## RowClust2 -0.1027081  0.4698201 -0.1486822
+## RowClust3  0.5472476 -0.1225677 -0.4831762
 
 ## The parameter estimates above are from the fitted values on the link scale;
 ## since this glm family is Poisson, they are on the log scale.
@@ -559,9 +582,9 @@ gam33.mat <- round(r3c3.pars[[4]],2)
 gam33.mat
 
 ##           ColClust1 ColClust2 ColClust3
-## RowClust1     -0.15     -0.10      0.47
-## RowClust2     -0.48      0.55     -0.12
-## RowClust3      0.58     -0.48     -0.19
+## RowClust1     -0.48     -0.19      0.58
+## RowClust2     -0.10      0.47     -0.15
+## RowClust3      0.55     -0.12     -0.48
 
 ## Strongest positive associations are between:
 ## (i) RowClust3 and ColClust1, i.e. (D,F,H) and (a,c,e,h)
@@ -584,18 +607,17 @@ mod.list$r3c3 <- r3c3.out
 
 mod.table <- comparison(mod.list)
 
-##             logL npar     AIC relAIC     BIC relBIC
-## Null    -105.375    1 212.750 60.040 215.132  0.000
-## Row      -93.486    8 202.972 50.262 222.028  6.896
-## Col      -94.934   10 209.867 57.157 233.687 18.555
-## Row+Col  -83.044   17 200.089 47.379 240.583 25.451
-## r2       -53.852   28 163.704 10.994 230.401 15.269
-## r3       -40.420   39 158.839  6.129 251.738 36.606
-## c2       -52.157   26 156.314  3.604 218.247  3.115
-## c3       -41.355   35 152.710  0.000 236.081 20.949
-## r2c2     -66.905   22 177.810 25.100 230.215 15.083
-## r3c3     -60.713   29 179.426 26.716 248.505 33.373
-
+##             logL Res.Dev. npar     AIC relAIC     BIC relBIC
+## Null    -105.375  210.750    1 212.750 56.436 215.132  0.000
+## Row      -93.486  186.972    8 202.972 46.658 222.028  6.896
+## Col      -94.934  189.867   10 209.867 53.553 233.687 18.555
+## Row+Col  -83.044  166.089   17 200.089 43.775 240.583 25.451
+## r2       -53.852  107.704   28 163.704  7.390 230.401 15.269
+## r3       -40.420   80.839   39 158.839  2.525 251.738 36.606
+## c2       -52.157  104.314   26 156.314  0.000 218.247  3.115
+## c3       -43.289   86.578   35 156.578  0.264 239.949 24.817
+## r2c2     -66.905  133.810   22 177.810 21.496 230.215 15.083
+## r3c3     -60.713  121.426   29 179.426 23.112 248.505 33.373
 ## Note: mod.table is actually a data frme, see
 class(mod.table)
 

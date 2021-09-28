@@ -185,7 +185,7 @@ set.seed(1)
 
 ```{r, results="hide"}
 row2clustonly.out <- clustglm(Y~rowclust*colclust, family="binomial", data=longdat,
-                                  fact4clust = c("ROW","COL"), nclus=c(2,2), 
+                                  fact4clust = c("facA","facB"), nclus=c(2,2), 
                                   clustfactnames = c("rowclust","colclust"),
                                   start.control = list(randstarts=10))
 ```
